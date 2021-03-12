@@ -23,7 +23,7 @@ contract LotteryToken is ERC721Full, Ownable {
     
     // checks if we can generate tokens
     modifier canGenerate() {
-        require(_progressiveId < _maxSupply,"Max token supply reached");
+        require(_progressiveId < 5,"Max token supply reached");
         _;
         
     }
@@ -38,37 +38,24 @@ contract LotteryToken is ERC721Full, Ownable {
         return _maxSupply;
     }
     
-    function newLottoToken(uint256 amount, address purchaser, address beneficiary) public returns (uint256) {
+    function newLottoToken(uint256 amount, address payable addr, address purchaser) public returns (uint256) {
         uint256 tokenId = _progressiveId.add(1);
-        _mint(beneficiary, tokenId);
+        _mint(purchaser, tokenId);
         _structureIndex[tokenId] = LottoTokenStructure(amount,purchaser);
         _progressiveId = tokenId;
         return tokenId;
     }
     
-    function isVisible (uint256 tokenId) external view returns (bool visible, uint256 date) {
-        if (_exists(tokenId)) {
-            LottoTokenStructure storage LottoToken = _structureIndex[tokenId];
-            visible = block.timestamp >= LottoToken.date;
-            date = LottoToken.date;
-            
-        } 
-        else {
-            visible = false;
-            date = 0;
-        }
     
-    }
-    
-    function getLottoToken (uint256 tokenId) external view returns (uint256 amount, address purchaser, address beneficiary, uint256 date) {
+    function getLottoToken (uint256 tokenId) external view returns (uint256 amount, address purchaser, address beneficiary) {
         require(_exists(tokenId),"Token must exists");
         LottoTokenStructure storage LottoToken = _structureIndex[tokenId];
 
-        require(block.timestamp >= LottoToken.date, "Now should be greater than gift date");
+        //require(block.timestamp >= LottoToken.date, "Now should be greater than gift date");
         amount = LottoToken.amount;
         purchaser = LottoToken.purchaser;
         beneficiary = ownerOf(tokenId);
-        date = LottoToken.date;
+        
     }
     
     function burn(uint256 tokenId) external {
