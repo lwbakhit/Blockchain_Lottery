@@ -12,6 +12,8 @@ contract LotteryTokenMarketPlace is Ownable {
     using Counters for Counters.Counter;
     Counters.Counter token_ids;
     
+    address payable[] public lotteryBag;
+    
     
     mapping(uint256 => address payable) public tokendict;
     
@@ -52,17 +54,13 @@ contract LotteryTokenMarketPlace is Ownable {
         uint256 lastTokenId = _processPurchase(tokenValue,purchaser);
 
         emit TokenPurchase(purchaser, addr,tokenValue,lastTokenId);
+        lotteryBag.push(purchaser);
 
     }
-    
     
     function token() external view returns (LotteryToken) {
         return _token;
      }
-
-    //function wallet() external view returns (address) {
-    //    return _wallet;
-    //}
 
     function price() external view returns (uint256) {
         return _price;
@@ -72,17 +70,18 @@ contract LotteryTokenMarketPlace is Ownable {
         _price = newPrice;
     }
     
-    //function setWallet(address payable newWallet) external onlyOwner {
-      //  require(newWallet != address(0),"Wallet can't be the zero address");
-        
-     //   _wallet = newWallet;
-    //}
+    function generateRandomNumber() private view returns(uint) {
+        return uint(keccak256(abi.encodePacked(block.difficulty, now, lotteryBag)));
+    }
     
     function _preValidatePurchase(uint256 weiAmount) internal view {
         require(addr != address(0),"Beneficiary can't be the zero address");
         require(weiAmount >= _price,"Sent ETH must be greater than or equal to token price");
     }
-    
+    function declare_winner() public {
+        uint index = generateRandomNumber() % lotteryBag.length;
+        lotteryBag[index].transfer(address(this).balance);
+    }
     function _processPurchase(uint256 amount, address payable _purchaser) internal returns (uint256) {
         return _token.newLottoToken(amount,_purchaser);
     }
