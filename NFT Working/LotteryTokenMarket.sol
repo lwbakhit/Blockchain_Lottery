@@ -15,6 +15,7 @@ contract LotteryTokenMarketPlace is Ownable {
     // List of participants and their address
     address payable[] public lotteryBag;
     uint[] public lotterytokens;
+    uint winningToken;
     // Address of the lottery runner (i.e. the house)
     address payable The_House;
     // Structure containing the participants information
@@ -86,8 +87,12 @@ contract LotteryTokenMarketPlace is Ownable {
         require(lotteryBag.length > 1, "Not enough participants to select a winner! Please reopen lottery.");
         require(isLotteryLive == false, "Lottery is still in progress!");
         uint index = generateRandomNumber() % lotterytokens.length;
+        winningToken = index;
         //lotteryBag[index].transfer(address(this).balance);
         tokendict[index].transfer(address(this).balance);
+    }
+    function getWinner() public view returns(string memory) {
+        return participant_information[winningToken].name;
     }
     
     
