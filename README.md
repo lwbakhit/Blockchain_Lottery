@@ -24,11 +24,23 @@ ____
 
 ![LotteryTokenDeploy](./Images/Flow.PNG)
 
-### ERC721 - Why did we use NFT as opposed to fungible?
+### Token Contract
 To begin, in our code we wrote a contract in solidity to create a Non-Fungible Token ("NFT") to serve as our lottery ticket. The reason that we used the ERC721 standard from OpenZepplin rather than the ERC20 standard for fungible tokens was because we needed a way to chart a specific token to a specific address in order to declare a winner. While the ERC20 standard is easier to use in a crowdsale situation, like you would expect to have during a lottery, there is no built in functionality to check which address owns which specific token. There is only the ability to check the balance of the addresses. So, while in the real world it is natural to think of lottery tickets as fungible in that they are interchangeable due to their equal likelihood of winning, in solidity we really need to leverage NFTs.
 
-### Activate and Deactivate functions:
-The activateLottery function makes sure that no unauthorized users can start the lottery and only “the house” can start a new session in the same way that the deactivateLottery function makes sure only “the house” can end the lottery and declare a winner. This proves as a safeguard against hackers messing with the timing of the lottery contract. 
+### Market Contract
+After our token contract, we then needed to create a contract that would allow participants to come to our lottery and purchase our tokens unsolicited in a market place rather than simply awarding tokens to addresses, as is the standard in the OpenZepplin ERC721 solidity file. To begin, we needed to create two arrays, each of which would capture the addresses of our participants and the tokens that have been minted and purchased.
+
+![Arrays](./Images/array.png)
+
+Next, we had to create a structure to account for our participant's addresses and their names. We also had to create mapping that would link the token ids to the participant structure and their address. Each of these objects helps us keep track of our players and their information. Each are dynamically updated as players buy new tokens through our purchase function below.
+
+![ParticipantStructures](./Images/structures.png)
+
+![BuyFunction](./Images/purchase.png)
+
+We also have active and deactive functions within the contract to ensure that no unauthorized users can start the lottery and only “the house” can start a new session. This serves as a safeguard against an unauthorized participant seeking to game the system. 
+
+![Activate_Deactive](./Images/activate_deactivate.png)
 
 ### Selecting random winner and distributing funds:
 Our contract not only accounts for making sure “the house” is the only authorized user to pick a winner and validate that more than the necessary 1 player is logged, but also selects a random token from the list of active lottery players to make sure that there is a winner in every round. The funds are then directly transferred to the player’s wallet who owns the selected token. It completely blocks any possibility of a fraudulent transaction or claim to the winning number. 
