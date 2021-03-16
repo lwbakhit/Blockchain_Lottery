@@ -32,8 +32,6 @@ contract LotteryTokenMarketPlace is Ownable {
     LotteryToken private _token;
     // Address where funds are collected --> in this case the contract
     address payable addr = address(uint160(address(this)));
-    // Address of purchaser
-    //address payable purchaser;
     // Setting the lottery state as live through a boolean
     bool public isLotteryLive;
     // The price for a token
