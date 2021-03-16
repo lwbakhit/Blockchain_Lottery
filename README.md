@@ -25,7 +25,7 @@ ____
 ![LotteryTokenDeploy](./Images/Flow.PNG)
 
 ### ERC721 - Why did we use NFT as opposed to fungible?
-We used an NFT so every player that buys into the lottery will have a unique token. This will help eliminate fraud and multiple winning tokens so there can only be one winner. 
+To begin, in our code we wrote a contract in solidity to create a Non-Fungible Token ("NFT") to serve as our lottery ticket. The reason that we used the ERC721 standard from OpenZepplin rather than the ERC20 standard for fungible tokens was because we needed a way to chart a specific token to a specific address in order to declare a winner. While the ERC20 standard is easier to use in a crowdsale situation, like you would expect to have during a lottery, there is no built in functionality to check which address owns which specific token. There is only the ability to check the balance of the addresses. So, while in the real world it is natural to think of lottery tickets as fungible in that they are interchangeable due to their equal likelihood of winning, in solidity we really need to leverage NFTs.
 
 ### Activate and Deactivate functions:
 The activateLottery function makes sure that no unauthorized users can start the lottery and only “the house” can start a new session in the same way that the deactivateLottery function makes sure only “the house” can end the lottery and declare a winner. This proves as a safeguard against hackers messing with the timing of the lottery contract. 
