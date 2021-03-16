@@ -79,17 +79,17 @@ We can do a similar exercise in the LotteryToken contract. By call the **totalSu
 
 ![Owner](Images/owner.png)
 
-6) After we have verified that we believe the contracts are working properly in relation to our transactions, we can deactivate our lottery. This will close our lottery, forbid any further purchases, and allow us to proceed with selecting a winner. The deactivate functionality is located in the LotteryTokenMarket contract.
+6) After we have verified that we believe the contracts are working properly in relation to our transactions, we can deactivate our lottery. This will close out our lottery, forbid any further purchases, and allow us to proceed with selecting a winner. The deactivate functionality is located in the LotteryTokenMarket contract.
 
 ![DeactivateLottery](Images/deactivate_lottery.png)
 
-7) With the lottery shutdown, we can select a winner. We can do so by selecting the **declare_winner** button in the LotteryTokenMarket contract. In the code, this will select a random, using the number of index in the lotteryTokens list. Each index corresponds to a token, and since the tokenIds and indexes increase incrementally by one, the first index will correspond to tokenId 1 and the second index will correspond to tokenId 2. 
+7) With the lottery shutdown, we can select a winner. We can do so by selecting the **declare_winner** button in the LotteryTokenMarket contract. In the code, this will select a random number, using the number of index in the lotteryTokens array. Each index corresponds to a token, and since the tokenIds and indexes increase incrementally by one, the first index will correspond to tokenId 1 and the second index will correspond to tokenId 2. 
 
 The declare_winner function will also distribute the funds to the winner by using the winning index (i.e. tokenId) and feeding into the tokendict mapping to select the winning address.
 
 ![DeclareWinner](Images/declare_winner.png)
 
-8) Once we have declared a winner, we will want to verify that it has properly selected a winner and distributed the funds. To begin, we can check that one of our Ganache address went up by 2 ETH. In this case, each address was 100, so it should be easy to verify.
+8) Once we have called this function, we will want to verify that it has properly selected a winner and distributed the funds. To begin, we can check that one of our Ganache address went up by 2 ETH. In this case, each address was 100, so it should be easy to verify.
 
 ![GanacheCheck](Images/ganache_check.png)
 
